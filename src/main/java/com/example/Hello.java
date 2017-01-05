@@ -1,5 +1,6 @@
 package com.example;
 
+import org.scijava.java3d.Alpha;
 import org.scijava.java3d.Appearance;
 import org.scijava.java3d.BoundingSphere;
 import org.scijava.java3d.BranchGroup;
@@ -8,8 +9,10 @@ import org.scijava.java3d.Geometry;
 import org.scijava.java3d.GeometryArray;
 import org.scijava.java3d.Material;
 import org.scijava.java3d.QuadArray;
+import org.scijava.java3d.RotationInterpolator;
 import org.scijava.java3d.Shape3D;
 import org.scijava.java3d.Texture2D;
+import org.scijava.java3d.Transform3D;
 import org.scijava.java3d.TransformGroup;
 import org.scijava.java3d.utils.behaviors.mouse.MouseRotate;
 import org.scijava.java3d.utils.image.TextureLoader;
@@ -17,6 +20,7 @@ import org.scijava.java3d.utils.universe.SimpleUniverse;
 import org.scijava.vecmath.Color3f;
 import org.scijava.vecmath.Point3d;
 import org.scijava.vecmath.TexCoord2f;
+import org.scijava.vecmath.Vector3d;
 
 import java.awt.*;
 
@@ -33,18 +37,17 @@ class Hello {
         trans.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
         trans.setCapability(TransformGroup.ENABLE_PICK_REPORTING);
 
-        BoundingSphere bound = new BoundingSphere(new Point3d(), 100.0);
+        //BoundingSphere bound = new BoundingSphere(new Point3d(), 100.0);
 
-        MouseRotate rot = new MouseRotate();
-        rot.setTransformGroup(trans);
-        rot.setSchedulingBounds(bound);
-        trans.addChild(rot);
+//        MouseRotate rot = new MouseRotate();
+//        rot.setTransformGroup(trans);
+//        rot.setSchedulingBounds(bound);
+//        trans.addChild(rot);
         group.addChild(trans);
-
 
         // lighting
         DirectionalLight light = new DirectionalLight();
-        light.setInfluencingBounds(bound);
+        light.setInfluencingBounds(new BoundingSphere(new Point3d(), 100.0));
         trans.addChild(light);
 
         // texture
@@ -83,6 +86,17 @@ class Hello {
         Shape3D shape = new Shape3D(geom, ap);
         shape.setCapability(Shape3D.ALLOW_GEOMETRY_READ);
         trans.addChild(shape);
+
+        // rotation
+        Transform3D axis = new Transform3D();
+        axis.rotZ( -(Math.PI / 2.0) );
+
+        Alpha alpha = new Alpha(-1, 200L);
+
+        RotationInterpolator rotationInterpolator =
+                new RotationInterpolator(alpha, trans, axis, 0.0f, (float)(Math.PI*2.0));
+        rotationInterpolator.setSchedulingBounds(new BoundingSphere(new Point3d(), 100.0));
+        trans.addChild(rotationInterpolator);
 
         universe.getViewingPlatform().setNominalViewingTransform();
         universe.addBranchGraph(group);
