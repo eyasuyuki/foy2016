@@ -3,7 +3,6 @@ package com.example;
 import org.scijava.java3d.Appearance;
 import org.scijava.java3d.BoundingSphere;
 import org.scijava.java3d.BranchGroup;
-import org.scijava.java3d.Canvas3D;
 import org.scijava.java3d.DirectionalLight;
 import org.scijava.java3d.Material;
 import org.scijava.java3d.Texture2D;
@@ -16,7 +15,9 @@ import org.scijava.java3d.utils.universe.SimpleUniverse;
 import org.scijava.vecmath.Color3f;
 import org.scijava.vecmath.Point3d;
 
-import java.awt.*;
+import java.awt.Toolkit;
+import java.awt.Image;
+import java.awt.Container;
 
 class Hello {
     public Hello() {
