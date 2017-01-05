@@ -7,25 +7,18 @@ import org.scijava.java3d.DirectionalLight;
 import org.scijava.java3d.Geometry;
 import org.scijava.java3d.GeometryArray;
 import org.scijava.java3d.Material;
-import org.scijava.java3d.PolygonAttributes;
 import org.scijava.java3d.QuadArray;
 import org.scijava.java3d.Shape3D;
 import org.scijava.java3d.Texture2D;
 import org.scijava.java3d.TransformGroup;
 import org.scijava.java3d.utils.behaviors.mouse.MouseRotate;
-import org.scijava.java3d.utils.geometry.Box;
-import org.scijava.java3d.utils.geometry.Primitive;
 import org.scijava.java3d.utils.image.TextureLoader;
 import org.scijava.java3d.utils.universe.SimpleUniverse;
 import org.scijava.vecmath.Color3f;
-import org.scijava.vecmath.Point2d;
-import org.scijava.vecmath.Point2f;
 import org.scijava.vecmath.Point3d;
 import org.scijava.vecmath.TexCoord2f;
 
-import java.awt.Toolkit;
-import java.awt.Image;
-import java.awt.Container;
+import java.awt.*;
 
 class Hello {
     public Hello() {
