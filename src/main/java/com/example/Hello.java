@@ -12,6 +12,7 @@ import org.scijava.java3d.QuadArray;
 import org.scijava.java3d.RotationInterpolator;
 import org.scijava.java3d.Shape3D;
 import org.scijava.java3d.Texture2D;
+import org.scijava.java3d.TextureAttributes;
 import org.scijava.java3d.Transform3D;
 import org.scijava.java3d.TransformGroup;
 import org.scijava.java3d.utils.behaviors.mouse.MouseRotate;
@@ -57,14 +58,20 @@ class Hello {
 
         // material
         Material mat = new Material();
-        mat.setDiffuseColor(new Color3f(1.0f, 1.0f, 1.0f));
+        mat.setLightingEnable(true);
+        mat.setAmbientColor(new Color3f(0.1f, 0.1f, 0.1f));
+        mat.setDiffuseColor(new Color3f(0.2f, 0.2f, 0.2f));
         mat.setSpecularColor(new Color3f(0.5f, 0.5f, 0.5f));
+        mat.setShininess(64.0f);
 
         // appearance
         Appearance ap = new Appearance();
         ap.setMaterial(mat);
         ap.setTexture(tex);
         //ap.setPolygonAttributes(new PolygonAttributes(PolygonAttributes.POLYGON_FILL, PolygonAttributes.CULL_BACK, 0.0f, false));
+        TextureAttributes txatt = new TextureAttributes();
+        txatt.setTextureMode(TextureAttributes.COMBINE);
+        ap.setTextureAttributes(txatt);
 
         // shape
         Point3d[] verts = new Point3d[4];
