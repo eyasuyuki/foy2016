@@ -16,15 +16,19 @@ import org.scijava.java3d.TextureAttributes;
 import org.scijava.java3d.Transform3D;
 import org.scijava.java3d.TransformGroup;
 import org.scijava.java3d.utils.image.TextureLoader;
-import org.scijava.java3d.utils.universe.PlatformGeometry;
 import org.scijava.java3d.utils.universe.SimpleUniverse;
 import org.scijava.vecmath.Color3f;
 import org.scijava.vecmath.Point3d;
 import org.scijava.vecmath.TexCoord2f;
 
-import java.awt.*;
+import java.awt.Toolkit;
+import java.awt.Image;
+import java.awt.Container;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.logging.Logger;
 
 
@@ -45,6 +49,8 @@ class Hello {
 
     private static TexCoord2f[] fCoords = new TexCoord2f[4];
     private static TexCoord2f[] bCoords = new TexCoord2f[4];
+
+    private static Shape3D[] shapes = new Shape3D[20];
 
     private static BranchGroup root = new BranchGroup();
     private static BranchGroup rotGroup = null;
@@ -122,7 +128,7 @@ class Hello {
         Transform3D axis = new Transform3D();
         axis.rotZ( -(Math.PI / 2.0) );
 
-        Alpha alpha = new Alpha(1, 200L);
+        Alpha alpha = new Alpha(25, 200L);
         alpha.setStartTime(System.currentTimeMillis() + 100L);
 
         RotationInterpolator rotationInterpolator =
@@ -178,7 +184,31 @@ class Hello {
         light.setInfluencingBounds(new BoundingSphere(new Point3d(), 100.0));
         trans.addChild(light);
 
-        trans.addChild(createShape(holders[1], bVerts, bCoords));
+        shapes[0] = createShape(holders[1], bVerts, bCoords);
+        shapes[1] = createShape(titles[1], verts, fCoords);
+        shapes[2] = createShape(holders[2], bVerts, bCoords);
+        shapes[3] = createShape(titles[2], verts, fCoords);
+        shapes[4] = createShape(holders[3], bVerts, bCoords);
+        shapes[5] = createShape(titles[3], verts, fCoords);
+        shapes[6] = createShape(holders[4], bVerts, bCoords);
+        shapes[7] = createShape(titles[4], verts, fCoords);
+        shapes[8] = createShape(holders[5], bVerts, bCoords);
+        shapes[9] = createShape(titles[5], verts, fCoords);
+        shapes[10] = createShape(holders[6], bVerts, bCoords);
+        shapes[11] = createShape(titles[6], verts, fCoords);
+        shapes[12] = createShape(holders[7], bVerts, bCoords);
+        shapes[13] = createShape(titles[7], verts, fCoords);
+        shapes[14] = createShape(holders[8], bVerts, bCoords);
+        shapes[15] = createShape(titles[8], verts, fCoords);
+        shapes[16] = createShape(holders[9], bVerts, bCoords);
+        shapes[17] = createShape(titles[9], verts, fCoords);
+        shapes[18] = createShape(holders[0], bVerts, bCoords);
+        shapes[18] = createShape(titles[0], verts, fCoords);
+
+        List<Shape3D> shapeList = Arrays.asList(shapes);
+        Collections.shuffle(shapeList);
+
+        trans.addChild(shapeList.get(0));
 
         universe.getViewingPlatform().setNominalViewingTransform();
         universe.addBranchGraph(root);
