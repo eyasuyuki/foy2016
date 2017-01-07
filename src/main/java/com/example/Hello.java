@@ -96,9 +96,8 @@ class Hello {
         Appearance ap = new Appearance();
         ap.setMaterial(mat);
         ap.setTexture(tex);
-        //ap.setPolygonAttributes(new PolygonAttributes(PolygonAttributes.POLYGON_FILL, PolygonAttributes.CULL_BACK, 0.0f, false));
         TextureAttributes txatt = new TextureAttributes();
-        txatt.setTextureMode(TextureAttributes.COMBINE);
+        txatt.setTextureMode(TextureAttributes.MODULATE);
         ap.setTextureAttributes(txatt);
 
         return ap;
@@ -123,7 +122,7 @@ class Hello {
         Transform3D axis = new Transform3D();
         axis.rotZ( -(Math.PI / 2.0) );
 
-        Alpha alpha = new Alpha(10, 200L);
+        Alpha alpha = new Alpha(1, 200L);
         alpha.setStartTime(System.currentTimeMillis() + 100L);
 
         RotationInterpolator rotationInterpolator =
