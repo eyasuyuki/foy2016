@@ -36,13 +36,37 @@ import java.util.logging.Logger;
 class Hello {
     private static Logger log = Logger.getLogger(Hello.class.getName());
 
-    private static String[] titles = {"images/10.png", "images/1.png", "images/2.png",
-            "images/3.png", "images/4.png", "images/5.png", "images/6.png",
-            "images/7.png", "images/8.png", "images/9.png" };
+    private static String[] lanks
+            = {"images/l1.png", "images/l2.png", "images/l3.png",
+            "images/l4.png", "images/l5.png", "images/l6.png",
+            "images/l7.png", "images/l8.png", "images/l9.png",
+            "images/l10.png"
+    };
 
-    private static String[] holders = {"images/season.png", "images/nissei.png", "images/one.png",
-            "images/vanguard.png", "images/daiwa.png", "images/season.png", "images/leos.png",
-            "images/leos.png", "images/smta.png", "images/nissei.png" };
+    private static String[] titles
+            = {"images/1.png", "images/2.png", "images/3.png",
+            "images/4.png", "images/5.png", "images/6.png",
+            "images/7.png", "images/8.png", "images/9.png",
+            "images/10.png",  "images/11a.png", "images/11b.png",
+            "images/13.png", "images/14.png", "images/15.png",
+            "images/16.png", "images/17.png", "images/18.png",
+            "images/19.png", "images/20a.png", "images/20b.png",
+            "images/20c.png", "images/20d.png"
+    };
+
+    private static String[] holders
+            = {"images/nissei.png", "images/one.png", "images/vanguard.png",
+            "images/daiwa.png", "images/season.png", "images/leos.png",
+            "images/leos.png", "images/smta.png", "images/nissei.png",
+            "images/season.png", "images/kamakura.png", "images/smam.png",
+            "images/nomura.png", "images/one.png", "images/ufj.png",
+            "images/smta.png", "images/state.png", "images/smta.png",
+            "images/smam.png", "images/nissei.png", "images/smta.png",
+            "images/leos.png", "images/commons.png"
+    };
+
+    private static Point3d[] lVerts = new Point3d[4];
+    private static Point3d[] pVerts = new Point3d[4];
 
     private static Point3d[] verts = new Point3d[4];
     private static Point3d[] hVerts = new Point3d[4];
@@ -51,14 +75,24 @@ class Hello {
     private static TexCoord2f[] fCoords = new TexCoord2f[4];
     private static TexCoord2f[] bCoords = new TexCoord2f[4];
 
-    private static Shape3D[] shapes = new Shape3D[10];
-    private static Shape3D[] fShapes = new Shape3D[11];
-    private static Shape3D[] bShapes = new Shape3D[10];
+    private static Shape3D[] shapes = new Shape3D[23];
+    private static Shape3D[] fShapes = new Shape3D[24];
+    private static Shape3D[] bShapes = new Shape3D[23];
 
     private static BranchGroup root = new BranchGroup();
     private static BranchGroup rotGroup = null;
 
     static {
+        lVerts[0] = new Point3d(-1.0, -0.1, 0.0);
+        lVerts[1] = new Point3d(-0.8, -0.1, 0.0);
+        lVerts[2] = new Point3d(-0.8, 0.1, 0.0);
+        lVerts[3] = new Point3d(-1.0, 0.1, 0.0);
+
+        pVerts[0] = new Point3d(0.8, -0.1, 0.0);
+        pVerts[0] = new Point3d(1.0, -0.1, 0.0);
+        pVerts[0] = new Point3d(1.0, 0.1, 0.0);
+        pVerts[0] = new Point3d(0.8, 0.1, 0.0);
+
         verts[0] = new Point3d(-0.8, 0.0, 0.0);
         verts[1] = new Point3d(0.8, 0.0, 0.0);
         verts[2] = new Point3d(0.8, 0.1, 0.0);
@@ -84,45 +118,13 @@ class Hello {
         bCoords[2] = new TexCoord2f(0.0f, 0.0f);
         bCoords[3] = new TexCoord2f(1.0f, 0.0f);
 
-        shapes[0] = createShape(titles[0], verts, fCoords);
-        shapes[1] = createShape(titles[1], verts, fCoords);
-        shapes[2] = createShape(titles[2], verts, fCoords);
-        shapes[3] = createShape(titles[3], verts, fCoords);
-        shapes[4] = createShape(titles[4], verts, fCoords);
-        shapes[5] = createShape(titles[5], verts, fCoords);
-        shapes[6] = createShape(titles[6], verts, fCoords);
-        shapes[7] = createShape(titles[7], verts, fCoords);
-        shapes[8] = createShape(titles[8], verts, fCoords);
-        shapes[9] = createShape(titles[9], verts, fCoords);
-
-        bShapes[0] = createShape(holders[0], bVerts, bCoords);
-        fShapes[0] = createShape(titles[0], hVerts, fCoords);
-        bShapes[1] = createShape(holders[1], bVerts, bCoords);
-        fShapes[1] = createShape(titles[1], hVerts, fCoords);
-        bShapes[2] = createShape(holders[2], bVerts, bCoords);
-        fShapes[2] = createShape(titles[2], hVerts, fCoords);
-        bShapes[3] = createShape(holders[3], bVerts, bCoords);
-        fShapes[3] = createShape(titles[3], hVerts, fCoords);
-        bShapes[4] = createShape(holders[4], bVerts, bCoords);
-        fShapes[4] = createShape(titles[4], hVerts, fCoords);
-        bShapes[5] = createShape(holders[5], bVerts, bCoords);
-        fShapes[5] = createShape(titles[5], hVerts, fCoords);
-        bShapes[6] = createShape(holders[6], bVerts, bCoords);
-        fShapes[6] = createShape(titles[6], hVerts, fCoords);
-        bShapes[7] = createShape(holders[7], bVerts, bCoords);
-        fShapes[7] = createShape(titles[7], hVerts, fCoords);
-        bShapes[8] = createShape(holders[8], bVerts, bCoords);
-        fShapes[8] = createShape(titles[8], hVerts, fCoords);
-        bShapes[9] = createShape(holders[9], bVerts, bCoords);
-        fShapes[9] = createShape(titles[9], hVerts, fCoords);
-        fShapes[10] = createShape("images/blank.png", hVerts, fCoords);
-
-        for (int i=0; i<10; i++) {
-            shapes[i].setCapability(Shape3D.ALLOW_PARENT_READ);
-            fShapes[i].setCapability(Shape3D.ALLOW_PARENT_READ);
-            bShapes[i].setCapability(Shape3D.ALLOW_PARENT_READ);
+        for (int i=0; i<23; i++) {
+            shapes[i] = createShape(titles[i], verts, fCoords);
+            bShapes[i] = createShape(holders[i], bVerts, bCoords);
+            fShapes[i] = createShape(titles[i], hVerts, fCoords);
         }
-        fShapes[10].setCapability(Shape3D.ALLOW_PARENT_READ);
+
+        fShapes[23] = createShape("images/blank.png", hVerts, fCoords);
 
     }
 
@@ -181,11 +183,14 @@ class Hello {
 
         group.setCapability(BranchGroup.ALLOW_DETACH);
 
+        // lank
+        trans.addChild(createShape(lanks[index], lVerts, fCoords));
+
         // rotation
         Transform3D axis = new Transform3D();
         axis.rotZ( -(Math.PI / 2.0) );
 
-        Alpha alpha = new Alpha(10, 200L);
+        Alpha alpha = new Alpha(23, 150L);
         alpha.setStartTime(System.currentTimeMillis() + 100L);
 
         RotationInterpolator rotationInterpolator =
@@ -202,16 +207,16 @@ class Hello {
         rSw.setCapability(Switch.ALLOW_SWITCH_WRITE);
 
         List<Integer> posList = new ArrayList<>();
-        for (int i=0; i<10; i++) { posList.add(i); }
+        for (int i=0; i<23; i++) { posList.add(i); }
         posList.remove(index);
         Collections.shuffle(posList);
 
-        for (int i=0; i<9; i++) {
+        for (int i=0; i<22; i++) {
             Shape3D top = shapes[posList.get(i)];
             Shape3D f;
             if (i == 0) {
                 log.severe("i="+i+", posList.get("+i+")="+posList.get(i));
-                f = fShapes[10];
+                f = fShapes[23];
             } else {
                 log.severe("i="+i+", posList.get("+i+")="+posList.get(i)+", posList.get("+i+"-1)="+posList.get(i-1));
                 f = fShapes[posList.get(i-1)];
@@ -232,8 +237,8 @@ class Hello {
         trans.addChild(sw);
         rotTrans.addChild(rSw);
 
-        Alpha a2 = new Alpha(1, 2000L);
-        Alpha a3 = new Alpha(1, 2000L);
+        Alpha a2 = new Alpha(1, 3450L);
+        Alpha a3 = new Alpha(1, 3450L);
         a2.setStartTime(alpha.getStartTime());
         a3.setStartTime(alpha.getStartTime());
 
@@ -241,8 +246,8 @@ class Hello {
         SwitchValueInterpolator rsi = new SwitchValueInterpolator(a3, rSw);
         si.setSchedulingBounds(new BoundingSphere(new Point3d(), 100.0));
         rsi.setSchedulingBounds(new BoundingSphere(new Point3d(), 100.0));
-        si.setLastChildIndex(9);
-        rsi.setLastChildIndex(9);
+        si.setLastChildIndex(22);
+        rsi.setLastChildIndex(22);
 
         group.addChild(si);
         group.addChild(rsi);
@@ -266,34 +271,34 @@ class Hello {
                 int k = -1;
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_0:
-                        k = 0;
+                        k = 9;
                         break;
                     case KeyEvent.VK_1:
-                        k = 1;
+                        k = 0;
                         break;
                     case KeyEvent.VK_2:
-                        k = 2;
+                        k = 1;
                         break;
                     case KeyEvent.VK_3:
-                        k = 3;
+                        k = 2;
                         break;
                     case KeyEvent.VK_4:
-                        k = 4;
+                        k = 3;
                         break;
                     case KeyEvent.VK_5:
-                        k = 5;
+                        k = 4;
                         break;
                     case KeyEvent.VK_6:
-                        k = 6;
+                        k = 5;
                         break;
                     case KeyEvent.VK_7:
-                        k = 7;
+                        k = 6;
                         break;
                     case KeyEvent.VK_8:
-                        k = 8;
+                        k = 7;
                         break;
                     case KeyEvent.VK_9:
-                        k = 9;
+                        k = 8;
                         break;
                     default:
                         return;
