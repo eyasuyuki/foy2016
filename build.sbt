@@ -5,6 +5,7 @@ version := "1.0"
 scalaVersion := "2.11.8"
 
 libraryDependencies ++= Seq(
+  "commons-lang"        % "commons-lang"    % "2.6",
   "org.jogamp.gluegen"  % "gluegen-rt-main" % "2.3.2",
   "org.jogamp.jogl"     % "jogl-all-main"   % "2.3.2",
   "org.scijava"         % "vecmath"         % "1.6.0-scijava-2",
