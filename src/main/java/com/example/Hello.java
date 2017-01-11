@@ -9,6 +9,7 @@ import org.scijava.java3d.DirectionalLight;
 import org.scijava.java3d.Geometry;
 import org.scijava.java3d.GeometryArray;
 import org.scijava.java3d.Material;
+import org.scijava.java3d.MediaContainer;
 import org.scijava.java3d.QuadArray;
 import org.scijava.java3d.RotationInterpolator;
 import org.scijava.java3d.Shape3D;
@@ -23,10 +24,17 @@ import org.scijava.java3d.utils.universe.SimpleUniverse;
 import org.scijava.vecmath.Color3f;
 import org.scijava.vecmath.Point3d;
 import org.scijava.vecmath.TexCoord2f;
+import sun.applet.Main;
 
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,6 +43,18 @@ import java.util.logging.Logger;
 
 class Hello {
     private static Logger log = Logger.getLogger(Hello.class.getName());
+
+    private static String[] musics = {
+      "mg.au", "best.au"
+    };
+
+    private static String[] points = {
+            "images/p0.png", "images/p1.png", "images/p2.png",
+            "images/p3.png", "images/p4.png", "images/p5.png",
+            "images/p6.png", "images/p7.png", "images/p8.png",
+            "images/p9.png"
+
+    };
 
     private static String[] lanks
             = {"images/l1.png", "images/l2.png", "images/l3.png",
@@ -66,7 +86,8 @@ class Hello {
     };
 
     private static Point3d[] lVerts = new Point3d[4];
-    private static Point3d[] pVerts = new Point3d[4];
+    private static Point3d[] nVerts = new Point3d[4];
+    private static Point3d[] sVerts = new Point3d[4];
 
     private static Point3d[] verts = new Point3d[4];
     private static Point3d[] hVerts = new Point3d[4];
@@ -74,6 +95,10 @@ class Hello {
 
     private static TexCoord2f[] fCoords = new TexCoord2f[4];
     private static TexCoord2f[] bCoords = new TexCoord2f[4];
+
+    private static TexCoord2f[] nCoords = new TexCoord2f[4];
+    private static TexCoord2f[] sCoords = new TexCoord2f[4];
+
 
     private static Shape3D[] shapes = new Shape3D[23];
     private static Shape3D[] fShapes = new Shape3D[24];
@@ -88,25 +113,30 @@ class Hello {
         lVerts[2] = new Point3d(-0.8, 0.1, 0.0);
         lVerts[3] = new Point3d(-1.0, 0.1, 0.0);
 
-        pVerts[0] = new Point3d(0.8, -0.1, 0.0);
-        pVerts[0] = new Point3d(1.0, -0.1, 0.0);
-        pVerts[0] = new Point3d(1.0, 0.1, 0.0);
-        pVerts[0] = new Point3d(0.8, 0.1, 0.0);
+        nVerts[0] = new Point3d(0.0, 0.0, 0.0);
+        nVerts[0] = new Point3d(0.1, 0.0, 0.0);
+        nVerts[0] = new Point3d(0.1, 0.1, 0.0);
+        nVerts[0] = new Point3d(0.0, 0.1, 0.0);
+
+        sVerts[0] = new Point3d(0.0, -0.1, 0.0);
+        sVerts[0] = new Point3d(0.1, -0.1, 0.0);
+        sVerts[0] = new Point3d(0.1, 0.0, 0.0);
+        sVerts[0] = new Point3d(0.0, 0.0, 0.0);
 
         verts[0] = new Point3d(-0.8, 0.0, 0.0);
-        verts[1] = new Point3d(0.8, 0.0, 0.0);
-        verts[2] = new Point3d(0.8, 0.1, 0.0);
+        verts[1] = new Point3d(0.7, 0.0, 0.0);
+        verts[2] = new Point3d(0.7, 0.1, 0.0);
         verts[3] = new Point3d(-0.8, 0.1, 0.0);
 
         hVerts[0] = new Point3d(-0.8, 0.0, 0.01);
-        hVerts[1] = new Point3d(0.8, 0.0, 0.01);
-        hVerts[2] = new Point3d(0.8, 0.1, 0.01);
+        hVerts[1] = new Point3d(0.7, 0.0, 0.01);
+        hVerts[2] = new Point3d(0.7, 0.1, 0.01);
         hVerts[3] = new Point3d(-0.8, 0.1, 0.01);
 
-        bVerts[0] = new Point3d(0.8, 0.0, -0.01);
+        bVerts[0] = new Point3d(0.7, 0.0, -0.01);
         bVerts[1] = new Point3d(-0.8, 0.0, -0.01);
         bVerts[2] = new Point3d(-0.8, 0.1, -0.01);
-        bVerts[3] = new Point3d(0.8, 0.1, -0.01);
+        bVerts[3] = new Point3d(0.7, 0.1, -0.01);
 
         fCoords[0] = new TexCoord2f(0.0f, 0.0f);
         fCoords[1] = new TexCoord2f(1.0f, 0.0f);
@@ -117,6 +147,16 @@ class Hello {
         bCoords[1] = new TexCoord2f(0.0f, 1.0f);
         bCoords[2] = new TexCoord2f(0.0f, 0.0f);
         bCoords[3] = new TexCoord2f(1.0f, 0.0f);
+
+        nCoords[0] = new TexCoord2f(0.0f, 0.5f);
+        nCoords[1] = new TexCoord2f(1.0f, 0.5f);
+        nCoords[2] = new TexCoord2f(1.0f, 1.0f);
+        nCoords[3] = new TexCoord2f(0.0f, 1.0f);
+
+        sCoords[0] = new TexCoord2f(0.0f, 0.0f);
+        sCoords[1] = new TexCoord2f(1.0f, 0.0f);
+        sCoords[2] = new TexCoord2f(1.0f, 0.5f);
+        sCoords[3] = new TexCoord2f(0.0f, 0.5f);
 
         for (int i=0; i<23; i++) {
             shapes[i] = createShape(titles[i], verts, fCoords);
@@ -149,7 +189,8 @@ class Hello {
             Texture2D tex = (Texture2D)new TextureLoader(img, new Container()).getTexture();
             ap.setTexture(tex);
             TextureAttributes txatt = new TextureAttributes();
-            txatt.setTextureMode(TextureAttributes.MODULATE);
+            txatt.setTextureMode(TextureAttributes.COMBINE);
+            txatt.setPerspectiveCorrectionMode(TextureAttributes.NICEST);
             ap.setTextureAttributes(txatt);
         }
 
@@ -166,8 +207,9 @@ class Hello {
         return shape;
     }
 
-    private BranchGroup createRotation(int index) {
+    private BranchGroup createRotation(int index) throws Exception {
         BranchGroup group = new BranchGroup();
+
 
         TransformGroup rotTrans = new TransformGroup();
 
@@ -190,8 +232,10 @@ class Hello {
         Transform3D axis = new Transform3D();
         axis.rotZ( -(Math.PI / 2.0) );
 
-        Alpha alpha = new Alpha(23, 150L);
-        alpha.setStartTime(System.currentTimeMillis() + 100L);
+        int count = 23;
+        long dur = 450L;
+        Alpha alpha = new Alpha(count, dur);
+        alpha.setStartTime(System.currentTimeMillis() + 400L);
 
         RotationInterpolator rotationInterpolator =
                 new RotationInterpolator(alpha, rotTrans, axis, 0.0f, (float)(Math.PI));
@@ -237,8 +281,8 @@ class Hello {
         trans.addChild(sw);
         rotTrans.addChild(rSw);
 
-        Alpha a2 = new Alpha(1, 3450L);
-        Alpha a3 = new Alpha(1, 3450L);
+        Alpha a2 = new Alpha(1, count * dur);
+        Alpha a3 = new Alpha(1, count * dur);
         a2.setStartTime(alpha.getStartTime());
         a3.setStartTime(alpha.getStartTime());
 
@@ -307,8 +351,29 @@ class Hello {
                     log.severe("keyPress: rotGroup is live.");
                     root.removeChild(rotGroup);
                 }
-                rotGroup = createRotation(k);
+                try {
+                    rotGroup = createRotation(k);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
                 root.addChild(rotGroup);
+
+                try {
+                    String file = musics[0];
+                    if (k == 1) file = musics[1];
+                    URL url = this.getClass().getClassLoader().getResource(file);
+
+                    AudioInputStream in = AudioSystem
+                            .getAudioInputStream(url);
+                    AudioFormat format = in.getFormat();
+                    DataLine.Info info = new DataLine.Info(Clip.class, format);
+                    Clip clip = (Clip)AudioSystem.getLine(info);
+                    clip.open(in);
+                    clip.start();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
             }
 
             @Override
@@ -330,7 +395,8 @@ class Hello {
         universe.getViewingPlatform().setNominalViewingTransform();
         universe.addBranchGraph(root);
 
-        universe.getViewer().getJFrame(0).setSize(640, 480);
+        universe.getViewer().getJFrame(0).setSize(720, 540);
+
     }
 
     public static void main(String[] args) {
