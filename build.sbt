@@ -20,3 +20,5 @@ resolvers ++= Seq(
   "scijava" at "https://mvnrepository.com/artifact/org.scijava/j3dcore"
 
 )
+
+mainClass in (Compile, run) := Some("com.example.Hello")
